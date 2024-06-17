@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounting and Warehouse Management</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <style>
+        /* Custom styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        h1 {
+            margin-top: 0;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .current-stock {
+            float: right;
+            margin-left: 20px;
+        }
+
+        .current-stock table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .current-stock th,
+        .current-stock td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .current-stock th {
+            background-color: #f0f0f0;
+        }
+
+        .account-balance {
+            overflow: hidden;
+            padding-top: 20px;
+        }
+
+        .account-balance h2 {
+            margin-top: 0;
+        }
+
+        .buttons {
+            padding-top: 50px;
+            text-align: center;
+            padding-bottom: 20px;
+            
+            
+        }
+
+        .buttons a {
+            margin-left: 10px;
+        }
+
+       
+        .logo {
+            font-size: 32px;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        footer {
+            text-align: center;
+            padding-top: 20px;
+            background-color: #f0f0f0;
+            border-top: 2px solid #ddd;
+            border-radius: 0 0 5px 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main page -->
+    <div class="container">
+        <h1><a href="{{ url_for('index') }}" class="home">Accounting and Warehouse Management</a></h1>
+
+        
+        <div class="account-balance">
+            <h2>Current Account Balance: {{ balance }}€</h2>
+        </div>
+        <div class="buttons">
+            <a href="{{ url_for('purchase') }}" class="btn btn-primary">Purchase</a>
+            <a href="{{ url_for('sale') }}" class="btn btn-primary">Sale</a>
+            <a href="{{ url_for('change_balance') }}" class="btn btn-primary">Balance Change</a>
+            <a href="{{ url_for('history') }}" class="btn btn-primary">History</a>
+        </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="toast toast-error">
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </div>
+    <div class="current-stock">
+        <h2>Current Stock</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populate with current stock data -->
+                {% for product, details in warehouse.items() %}
+                <tr>
+                    <td>{{ product }}</td>
+                    <td>{{ details.quantity }} Units</td>
+                    <td>{{ details.price }} €</td>
+                </tr>
+                {% endfor %}
+                <!-- Add more rows for other products -->
+            </tbody>
+        </table>
+    </div>
+    <footer>
+        &copy; 2024 Accounting and Warehouse Management by Peter
+    </footer>
+</body>
+</html>
